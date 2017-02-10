@@ -9,8 +9,9 @@ CC = g++
 ##################################################
 SRCDIR = src
 BUILDDIR = build
+INCLUDEDIR = include/
 BINDIR = bin/
-INC = -I include/
+INC_FLAG = -I $(INCLUDEDIR)
 LIB = lib/
 BOOSTLIB = -I $(LIB)boost_1_63_0
 
@@ -24,16 +25,16 @@ all: $(BINDIR)main.exe
 	@echo "Finished compiling the MicroEconomyTournament binary file"
 
 $(BINDIR)main.exe: main.cpp $(addprefix $(BUILDDIR)/, $(OBJECTS))
-	$(CC) $(INC) $(BOOSTLIB) -o $@ $^
+	$(CC) $(BOOSTLIB) -o $@ $^ $(INC_FLAG)
 
-$(BUILDDIR)/%.o: $(SRCDIR)/%.cpp
+$(BUILDDIR)/%.o: $(SRCDIR)/%.cpp #$(INCLUDEDIR)%.h
+	@echo $(INC_FLAGS)
 	@echo "Compiling " $@
-	$(CC) $(INC) $(BOOSTLIB) -c -o $@ $^
+	$(CC) $(INC_FLAG) $(BOOSTLIB) -c -o $@ $^
 
 clean:
 	rm $(addprefix $(BUILDDIR)/, $(OBJECTS))
 	@echo "Deleted object files"
-	rm $(BINDIR)main.exe
-	@echo "Deleted binary file"
+
 
 .PHONY: all clean
